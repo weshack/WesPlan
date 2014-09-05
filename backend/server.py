@@ -32,6 +32,14 @@ def major(major):
 def courses(course):
 	return getCourse(db.database, course)
 
+@app.route("login", methods=['POST'])
+def login():
+	user = request.form['username']
+	passw = request.form['password']
+	classes = getUserData(user,passw)
+	return classes
+
+
 @app.route("/userdata/", methods=['POST'])
 def returnData():
 	print request.form
