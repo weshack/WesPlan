@@ -71,7 +71,7 @@ sPk = 0
 total = json_data.size
 coursesAdded = []
 json_data.each do | course |
-	if course['semester'] == current_semester and not coursesAdded.index(course['title'])
+	if not coursesAdded.index(course['title'])
 		coursesAdded << course['title']
 		courseuid = primaryKey
 		sections = ""

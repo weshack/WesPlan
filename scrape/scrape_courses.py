@@ -281,6 +281,8 @@ def get_current_courses():
     urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2015']]
 
     for url in urls:
+    # url = "https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2015']
+        print "*"*20, url
         courses_offered_urls = get_courses_offered_urls_from_year_page(url)
         for courses_offered_url in courses_offered_urls:
             course_urls = get_course_urls_from_courses_offered_page(courses_offered_url)
