@@ -1,4 +1,6 @@
 from flask import Flask
+from flask import request
+from acadHist import getUserData
 from db.db import *
 
 app = Flask(__name__)
@@ -30,7 +32,14 @@ def major(major):
 def courses(course):
 	return getCourse(db.database, course)
 
-
+@app.route("/userdata/", methods=['POST'])
+def returnData():
+	print request.form
+	user = request.form['username']
+	passw = request.form['password']
+	classes = getUserData(user,passw)
+	return str(classes)
+	# return ', '.join(classes)
 
 if __name__ == "__main__":
 	app.debug = True
