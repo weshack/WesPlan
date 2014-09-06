@@ -17,7 +17,10 @@ def getMajors(conn):
 def getMajor(conn, major):
 	c = conn.cursor()
 	major = major.capitalize()
-	r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
+	try:
+		r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
+	except:
+		continue
 	
 	return {
 		'name': major,
