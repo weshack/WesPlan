@@ -121,6 +121,8 @@ def getMajorReqs(classes, major):
 
 
 def parseMajorData(majorName, classes):
+	if majorName == '':
+		return ''
 	#major = getMajor(db.database, 'Mathematics')
 
 	reqsTaken = []
@@ -199,7 +201,9 @@ def parseMajorData(majorName, classes):
 
 def returnData(username, password):
 	academicData = getUserData(username,password)
-	
+	print '*'*5
+	print academicData
+	print '*'*5
 	majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
 
 	data = {
