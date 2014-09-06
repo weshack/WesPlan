@@ -61,10 +61,10 @@ def login():
 
 def isElective(course, elStrs):
 	for elStr in elStrs:
-		if not elStr[:4] == course[:4]:
+		if not elStr[:4] == course['name'][:4]:
 			continue
 
-		courseNum = int(course[-3:])
+		courseNum = int(course['name'][-3:])
 
 		if course == elStr:
 			return True
