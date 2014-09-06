@@ -23,7 +23,7 @@ function majorProgress(data){
 }
 function gradProgress(data){
 	var courses = data['acadData']['classes']
-	var credits = 0  //TOTAL credits
+	var credits = data['acadData']['preMatric']
 	var creditsCurr = 0
 	var names = []
 	console.log(courses)
@@ -50,6 +50,7 @@ function gradProgress(data){
 			var genEd = courseList[i]['genEdArea']
 			var genEdArea = genEd.substring(0,2)
 			var genEdDept = genEd.slice(-4)
+
 			if(genEdArea == 'HA' && haSum < 3) {
 				if(deptCount(genEdDept, haDepts) < 2) {
 					haSum += 1
@@ -76,9 +77,13 @@ function gradProgress(data){
 }
 function deptCount(dept, array) {
 	var count = 0
-	for(e in array) {
-		if(e == dept) count += 1
+
+	for(var i = 0; i < array.length; i++) {
+		if(array[i] == dept) {
+			count += 1
+		}
 	}
+	console.log()
 	return count
 }
 
@@ -91,15 +96,12 @@ function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
 
 function updateGenEds(nsmSum, sbsSum, haSum) {
 	for(var i = 0; i < nsmSum; i++) {
-		console.log("#"+"nsm"+i.toString())
 		$("#"+"nsm"+i.toString()).addClass("bg-success")
 	}
 	for(var i = 0; i < sbsSum; i++) {
-		console.log("#"+"sbs"+i.toString())
 		$("#"+"sbs"+i.toString()).addClass("bg-success")
 	}
 	for(var i = 0; i < haSum; i++) {
-		console.log("#"+"ha"+i.toString())
 		$("#"+"ha"+i.toString()).addClass("bg-success")
 	}
 }
