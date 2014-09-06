@@ -54,19 +54,18 @@ def login():
 	data = returnData(user,passw)
 	#data={}
 	#return data
-
 	return render_template("index.html", data=data, jsonData=json.dumps(data))
 
 
 
 def isElective(course, elStrs):
 	for elStr in elStrs:
-		if not elStr[:4] == course['name'][:4]:
+		if not elStr[:4] == course[:4]:
 			continue
 
-		courseNum = int(course['name'][-3:])
+		courseNum = int(course[-3:])
 
-		if course['name'] == elStr:
+		if course == elStr:
 			return True
 
 		#Lower bound
@@ -89,54 +88,51 @@ def isElective(course, elStrs):
 
 def getMajorReqs(classes, major):
 	reqs = major['requiredCourses']
-	for r in reqs:
+	names = map(lambda x: x['name'], classes)
+	currents = map(lambda x: x['current'], classes)
+	reqsTaken = []
+	reqsCurr = []
+	reqsLeft = []
+
+	for i in range(len(reqs)):
+		r = reqs[i]
 		rt = False
 		if 'or' in r:
 			for r2 in r[1:-1].split(' or '):
 				print r2
-				if r2 in allClasses:
-					reqsTaken += [r2]
+				if r2 in names:
+					if currents[i]:
+						reqsCurr += [r2]
+					else:
+						reqsTaken += [r2]
 					rt = True
-		if r in allClasses:
-			reqsTaken += [r]
+		if r in names:
+			if currents[i]:
+				reqsCurr += [r]
+			else:
+				reqsTaken += [r]
 			rt = True
 		if not rt:
 			reqsLeft += [r]
 
+	return (reqsTaken, reqsCurr, reqsLeft)
+
 
 def parseMajorData(majorName, classes):
 	#major = getMajor(db.database, 'Mathematics')
-	classesTaken = classes['taken']
-	classesCurr = classes['current']
-
-	allClasses = classTaken + classCurr
 
 	reqsTaken = []
 	reqsCurr = []
 	reqsLeft = []
 
 	major = getMajor(db.database, majorName)
-	majorTitle = major['title']
+	majorTitle = str(major['title'])
 	if not major:
 		return 'DNE'
 
-	reqs =  major['requiredCourses']
-	for r in reqs:
-		rt = False
-		if 'or' in r:
-			for r2 in r[1:-1].split(' or '):
-				print r2
-				if r2 in allClasses:
-					reqsTaken += [r2]
-					rt = True
-		if r in allClasses:
-			reqsTaken += [r]
-			rt = True
-		if not rt:
-			reqsLeft += [r]
+	(reqsTaken, reqsCurr, reqsLeft) = getMajorReqs(classes,major)
 
-	reqsCurr = [i for i in reqsTaken if i in classCurr]
-	reqsTaken = [i for i in reqsTaken if i not in classCurr]
+	print reqsTaken
 
 	t1Taken = []
 	t2Taken = []
@@ -158,29 +154,31 @@ def parseMajorData(majorName, classes):
 	if t3els:
 		elStrs3 += re.split(', |\|\|', t3els)		
 	
+
 	for course in classes:
 		name = course['name']
-		if name in reqs:
+		if name in major['requiredCourses']:
 			continue
 		if isElective(name, elStrs1):
-			if name in classCurr:
+			if course['current']:
 				t1Current += [name]
 			else:
 				t1Taken += [name]
 		elif isElective(name, elStrs2):
-			if name in classCurr:
+			if course['current']:
 				t2Current += [name]
 			else:
 				t2Taken += [name]
 		elif isElective(name, elStrs3):
-			if name in classCurr:
+			if course['current']:
 				t3Current += [name]
 			else:
 				t3Taken += [name]
 
+	print majorTitle
 	majorDat = {
 		'name': majorName,
-		'title': majorTitle
+		'title': majorTitle,
 		'reqsTaken': reqsTaken,
 		'reqsCurr': reqsCurr,
 		'reqsLeft': reqsLeft,
@@ -189,20 +187,24 @@ def parseMajorData(majorName, classes):
 		't3Current': t3Current,
 		't1Taken': t1Taken,
 		't2Taken': t2Taken,
-		't3Taken': t3Taken
+		't3Taken': t3Taken,
+		't1Total': major['tier1Number'],
+		't2Total': major['tier2Number'],
+		't3Total': major['tier3Number']
+
 	}
 	return majorDat
 
 def returnData(username, password):
 	academicData = getUserData(username,password)
 	
-	# majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
-	# print majorData
+	majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
 
 	data = {
 		'acadData': academicData,
-		'majorData': {}#majorData
+		'majorData': majorData
 	}
+	print data
 	return data
 if __name__ == "__main__":
 	app.debug = True

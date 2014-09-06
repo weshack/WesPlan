@@ -29,7 +29,6 @@ def getMajor(conn, major):
 	except:
 		print "error getting major"
 		return {}
-
 	return {
 		'name': major,
 		'type': r[2],
@@ -56,8 +55,6 @@ def getCourse(conn, course):
 	c = conn.cursor()
 	#r = list(c.execute("select * from courses where department='{0}' and number='{1}'".format("ARAB", 201)).next())
 	query = "select * from courses where department='%s' and number='%s'"%(department.upper(), number)
-	print query
-	print query
 	try:
 		r = list(c.execute(query).next())
 	except:
