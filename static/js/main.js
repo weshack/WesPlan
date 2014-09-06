@@ -1,14 +1,13 @@
 console.log('js')
 $(document).ready(function(){
 	console.log("ready")
-	gradProgress(userData)
+	var gradGenEd = gradProgress(userData);
+	updateProgress("gradBar", gradGenEd)
+	updateProgress("genEdBar", gradGenEd)
 });
 
-function testf(data) {
-	console.log(data)
-}
-
 function gradProgress(data){
+	console.log(data)
 	courses = data['acadData']['classes']
 	$.getJSON('courses/'+courses.join('_'), function(courseData){
 		var credSum = 0
@@ -47,11 +46,15 @@ function gradProgress(data){
 		return [credSum, nsmSum, sbsSum, haSum]
 	})
 }
-
 function deptCount(dept, array) {
 	var count = 0
 	for(e in array) {
 		if(e == dept) count += 1
 	}
 	return count
+}
+
+function updateProgress(progressID, classesNumbers){
+	console.log(classesNumbers)
+	$("#"+progressID).find(".progress-bar-success").css("width", (classesNumbers[0]))
 }
