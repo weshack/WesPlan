@@ -3,6 +3,7 @@ from flask import request
 from flask import render_template
 from acadHist import getUserData
 from db.db import *
+import re
 
 app = Flask(__name__, static_folder="static", template_folder="static")
 @app.before_request
@@ -78,7 +79,7 @@ def parseMajorData(majorName, classes):
 	#major = getMajor(db.database, 'Mathematics')
 	reqsTaken = []
 	reqsLeft = []
-	major = getMajor(db.database, majorName)
+	major = getMajor(db.database, "ECON")
 	reqs =  major['requiredCourses']
 	for r in reqs:
 		rt = False
@@ -93,16 +94,32 @@ def parseMajorData(majorName, classes):
 		if not rt:
 			reqsLeft += [r]
 
-	electivesTaken = []
+	t1Taken = []
+	t2Taken = []
+	t3Taken = []
+	elStrs1 = []
+	elStrs2 = []
+	elStrs3 = []
 
 	t1els = major['tier1Electives']
-	elStrs = t1els.split(', ')
-	print elStrs
+	t2els = major['tier2Electives']
+	t3els = major['tier3Electives']
+	if t1els:
+		elStrs1 += re.split(', |\|\|', t1els)
+	if t2els:
+		elStrs2 += re.split(', |\|\|', t2els)
+	if t3els:
+		elStrs3 += re.split(', |\|\|', t3els)		
+	
 	for course in classes:
-		if isElective(course, elStrs):
-			electivesTaken += [course]
+		if isElective(course, elStrs1):
+			t1Taken += [course]
+		elif isElective(course, elStrs2):
+			t2Taken += [course]
+		elif isElective(course, elStrs3):
+			t3Taken += [course]
 
-	print electivesTaken
+
 
 
 
