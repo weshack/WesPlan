@@ -33,18 +33,29 @@ def major(major):
 def courses(course):
 	return getCourse(db.database, course)
 
+
 @app.route("/login", methods=['POST'])
 def login():
 	user = request.form['username']
 	passw = request.form['password']
 	data = returnData(user,passw)
 	
-	return data#render_template("index.html")
+	
 
+	return data#academicData#render_template("index.html")
+
+
+def parseMajorData(major, classes):
+	return getMajor(db.database, 'Mathematics')
 
 def returnData(username, password):
-	classes = getUserData(username,password)
-	return str(classes)
+	data = getUserData(username,password)
+	
+	majorData = map(lambda x: parseMajorData(x, data['classes']), data['major'].split(','))
+	print majorData
+	
+
+	return str(data)
 
 if __name__ == "__main__":
 	app.debug = True
