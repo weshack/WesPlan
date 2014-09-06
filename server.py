@@ -11,7 +11,7 @@ def db():
 
 @app.route("/")
 def main():
-	return render_template('index.html')
+	return render_template('login.html')
 
 @app.route("/majors")
 def majors():
@@ -38,7 +38,7 @@ def login():
 	user = request.form['username']
 	passw = request.form['password']
 	classes = returnData(user,passw)
-	return classes
+	return render_template("index.html")
 
 
 def returnData(username, password):
