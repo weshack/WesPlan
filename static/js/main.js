@@ -7,10 +7,22 @@ $(document).ready(function(){
 });
 
 function gradProgress(data){
-	courses = data['acadData']['classes']
-	$.getJSON('courses/'+courses.join('_'), function(courseData){
-		var credSum = 0
+	var courses = data['acadData']['classes']
+	var credits = 0  //TOTAL credits
+	var creditsCurr = 0
+	var names = []
+	console.log(courses)
+	for (var i =0; i < courses.length;i++){
+		x = courses[i]
+		names.push(x['name'])
+		if (x['current']){creditsCurr += parseFloat(x['credit'])}
+		else {credits += parseFloat(x['credit'])}
+	}
+	updateProgress("gradBar", credits-creditsCurr, creditsCurr, 32)
 
+	console.log(names)
+	$.getJSON('courses/'+names.join('_'), function(courseData){
+		console.log("HERE")
 		var nsmSum = 0
 		var nsmDepts = []
 		var sbsSum = 0
@@ -18,11 +30,9 @@ function gradProgress(data){
 		var haSum = 0
 		var haDepts = []
 
-		var courses = courseData['courses']
-		for (var i = 0; i < courses.length; i++){
-			credSum += parseFloat(courses[i]['credit'])
-
-			var genEd = courses[i]['genEdArea']
+		var courseList = courseData['courses']
+		for (var i = 0; i < courseList.length; i++){
+			var genEd = courseList[i]['genEdArea']
 			var genEdArea = genEd.substring(0,2)
 			var genEdDept = genEd.slice(-4)
 			if(genEdArea == 'HA' && haSum < 3) {
@@ -42,11 +52,15 @@ function gradProgress(data){
 				}
 			}
 		}
-		updateProgress("gradBar", credSum, 0, 32)
+		console.log([credits, nsmSum, sbsSum, haSum])
 		updateProgress("genEdBar", nsmSum+sbsSum+haSum, 0, 9)
+<<<<<<< HEAD
 		updateGenEds(nsmSum, sbsSum, haSum)
 
 		return [credSum, nsmSum, sbsSum, haSum]
+=======
+		return [credits, nsmSum, sbsSum, haSum]
+>>>>>>> ad9dae9e81bcbb05965873994ead7e13a1179b07
 	})
 }
 function deptCount(dept, array) {
@@ -64,17 +78,6 @@ function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
 }
 
 
-function updateGenEds(nsmSum, sbsSum, haSum) {
-	for(var i = 0; i < nsmSum; i++) {
-		$("#"+"nsm"+i.toString()).addClass("bg-success")
-	}
-	for(var i = 0; i < sbsSum; i++) {
-		$("#"+"sbs"+i.toString()).addClass("bg-success")
-	}
-	for(var i = 0; i < haSum; i++) {
-		$("#"+"ha"+i.toString()).addClass("bg-success")
-	}
-}
 
 
 
