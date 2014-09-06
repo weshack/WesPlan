@@ -35,11 +35,11 @@ def courses(course):
 
 @app.route("/login", methods=['POST'])
 def login():
-	user = request.form['username']
-	passw = request.form['password']
-	data = returnData(user,passw)
-	
-	return data#render_template("index.html")
+	# user = request.form['username']
+	# passw = request.form['password']
+	# data = returnData(user,passw)
+
+	return render_template("index.html")
 
 
 def returnData(username, password):

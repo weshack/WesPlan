@@ -4,11 +4,19 @@
    Author's custom styles
    ========================================================================== */
 
+.jumbotron {
+	
+}
 
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
 
-
-
+h2{
+	text-align: center;
+}
 
 
 
