@@ -3,7 +3,7 @@ from flask import request
 from flask import render_template
 from acadHist import getUserData
 from db.db import *
-import re
+import json
 
 app = Flask(__name__, static_folder="static", template_folder="static")
 @app.before_request
@@ -37,13 +37,12 @@ def courses(course):
 
 @app.route("/login", methods=['POST'])
 def login():
-	user = request.form['username']
-	passw = request.form['password']
-	data = returnData(user,passw)
-	
-	
+	# user = request.form['username']
+	# passw = request.form['password']
+	# data = returnData(user,passw)
+	data={}
 
-	return data#academicData#render_template("index.html")
+	return render_template("index.html", data=json.dumps(data))
 
 
 def isElective(course, elStrs):
@@ -79,7 +78,7 @@ def parseMajorData(majorName, classes):
 	#major = getMajor(db.database, 'Mathematics')
 	reqsTaken = []
 	reqsLeft = []
-	major = getMajor(db.database, "ECON")
+	major = getMajor(db.database, majorName)
 	reqs =  major['requiredCourses']
 	for r in reqs:
 		rt = False

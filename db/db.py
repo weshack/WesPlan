@@ -23,9 +23,12 @@ def getMajor(conn, major):
 	c = conn.cursor()
 	#major = major.capitalize()
 	print "*"*20, major
-	r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
-	
-	name = major
+	try:
+		r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
+		name = major
+	except:
+		print "error getting major"
+		return {}
 
 	return {
 		'name': major,
