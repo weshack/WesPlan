@@ -55,18 +55,18 @@ def login():
 	#data={}
 	#return data
 
-	return render_template("index.html", data=json.dumps(data))
+	return render_template("index.html", data=data, jsonData=json.dumps(data))
 
 
 
 def isElective(course, elStrs):
 	for elStr in elStrs:
-		if not elStr[:4] == course[:4]:
+		if not elStr[:4] == course['name'][:4]:
 			continue
 
-		courseNum = int(course[-3:])
+		courseNum = int(course['name'][-3:])
 
-		if course == elStr:
+		if course['name'] == elStr:
 			return True
 
 		#Lower bound

@@ -17,7 +17,7 @@
   <script <script src="static/js/vendor/jquery-1.11.0.min.js"></script>
   <script>
     {% autoescape false %}
-    var userData = $.parseJSON('{{data}}');
+    var userData = $.parseJSON('{{jsonData}}');
     {% endautoescape %}
   </script>
 
@@ -87,8 +87,9 @@
                 <div class="col-md-4 col-gened gened_2">SBS</div>
                 <div class="col-md-3 col-gened gened_3">SBS</div>
               </div>
-              <div class="row">
-                <h2>Computer Science</h2>
+              {% if data['majorData'][0] %}
+              <div class="row" id="major1Bar">
+                <h2>{{data['majorData'][0]['name']}}</h2>
                 <div class="col-md-11">
                   <div class="progress">
                     <div class="progress-bar progress-bar-success" style="width: 0%">
@@ -108,6 +109,53 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4"></div>
               </div>
+              {% endif %}
+              {% if data['majorData'][1] %}
+              <div class="row" id="major1Bar">
+                <h2>{{data['majorData'][1]['name']}}</h2>
+                <div class="col-md-11">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 0%">
+                      <span class="sr-only">55% Complete (success)</span>
+                    </div>
+                    <div class="progress-bar progress-bar-warning" style="width: 0%">
+                      <span class="sr-only">10% Complete (warning)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <p style="font-size:20px;">6/11</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+              </div>
+              {% endif %}
+              {% if data['majorData'][2] %}
+              <div class="row" id="major1Bar">
+                <h2>{{data['majorData'][2]['name']}}</h2>
+                <div class="col-md-11">
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 0%">
+                      <span class="sr-only">55% Complete (success)</span>
+                    </div>
+                    <div class="progress-bar progress-bar-warning" style="width: 0%">
+                      <span class="sr-only">10% Complete (warning)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <p style="font-size:20px;">6/11</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+              </div>
+              {% endif %}
             </div>
           </body>
           
