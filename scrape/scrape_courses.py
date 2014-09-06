@@ -277,8 +277,16 @@ def get_all_instructors_for_course(course):
 def get_current_courses():
     courses = []
     urls = []
+
+    urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Fall 2011']]
+    urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2012']]
+    urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Fall 2012']]
+    urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2013']]
+    urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Fall 2013']]
+    urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2014']]
     urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Fall 2014']]
     urls += ["https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2015']]
+
 
     for url in urls:
     # url = "https://iasext.wesleyan.edu/regprod/!wesmaps_page.html?term="+term_codes['Spring 2015']
