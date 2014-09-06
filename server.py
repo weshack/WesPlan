@@ -87,11 +87,27 @@ def isElective(course, elStrs):
 	return False
 
 
+def getMajorReqs(classes, major):
+	reqs = major['requiredCourses']
+	for r in reqs:
+		rt = False
+		if 'or' in r:
+			for r2 in r[1:-1].split(' or '):
+				print r2
+				if r2 in allClasses:
+					reqsTaken += [r2]
+					rt = True
+		if r in allClasses:
+			reqsTaken += [r]
+			rt = True
+		if not rt:
+			reqsLeft += [r]
+
 
 def parseMajorData(majorName, classes):
 	#major = getMajor(db.database, 'Mathematics')
-	classTaken = classes[2:]#['taken']
-	classCurr = classes[:2] #classes['current']
+	classesTaken = classes['taken']
+	classesCurr = classes['current']
 
 	allClasses = classTaken + classCurr
 
@@ -100,6 +116,7 @@ def parseMajorData(majorName, classes):
 	reqsLeft = []
 
 	major = getMajor(db.database, majorName)
+	majorTitle = major['title']
 	if not major:
 		return 'DNE'
 
@@ -142,26 +159,28 @@ def parseMajorData(majorName, classes):
 		elStrs3 += re.split(', |\|\|', t3els)		
 	
 	for course in classes:
-		if course in reqs:
+		name = course['name']
+		if name in reqs:
 			continue
-		if isElective(course, elStrs1):
-			if course in classCurr:
-				t1Current += [course]
+		if isElective(name, elStrs1):
+			if name in classCurr:
+				t1Current += [name]
 			else:
-				t1Taken += [course]
-		elif isElective(course, elStrs2):
-			if course in classCurr:
-				t2Current += [course]
+				t1Taken += [name]
+		elif isElective(name, elStrs2):
+			if name in classCurr:
+				t2Current += [name]
 			else:
-				t2Taken += [course]
-		elif isElective(course, elStrs3):
-			if course in classCurr:
-				t3Current += [course]
+				t2Taken += [name]
+		elif isElective(name, elStrs3):
+			if name in classCurr:
+				t3Current += [name]
 			else:
-				t3Taken += [course]
+				t3Taken += [name]
 
 	majorDat = {
 		'name': majorName,
+		'title': majorTitle
 		'reqsTaken': reqsTaken,
 		'reqsCurr': reqsCurr,
 		'reqsLeft': reqsLeft,
@@ -177,12 +196,12 @@ def parseMajorData(majorName, classes):
 def returnData(username, password):
 	academicData = getUserData(username,password)
 	
-	majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
-	print majorData
+	# majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
+	# print majorData
 
 	data = {
 		'acadData': academicData,
-		'majorData': majorData
+		'majorData': {}#majorData
 	}
 	return data
 if __name__ == "__main__":
