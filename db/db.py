@@ -50,15 +50,22 @@ def getMajor(conn, major):
 
 
 def getCourse(conn, course):
-	number = course[-3:len(course)]
-	department = course[0:3]
+	number = course[-3:]
+	department = course[:4]
 
 	c = conn.cursor()
-	r = list(c.execute("select * from courses where department='{0}' and number='{1}'"
-		.format(department.upper(), number)).next())
-
+	#r = list(c.execute("select * from courses where department='{0}' and number='{1}'".format("ARAB", 201)).next())
+	query = "select * from courses where department='%s' and number='%s'"%(department.upper(), number)
+	print query
+	print query
+	try:
+		r = list(c.execute(query).next())
+	except:
+		print "Course doesn't exist"
+		return ''
+	print r
 	return {
-		'name': course,
+		'name': r[3],
 		'title': r[3],
 		'genEdArea': r[1],
 		'url': r[4],
@@ -67,4 +74,4 @@ def getCourse(conn, course):
 		'gradingMode': r[10],
 		'description': r[11],
 		'sections': r[12]
-		}
+	}

@@ -33,7 +33,18 @@ def major(major):
 
 @app.route("/courses/<course>")
 def courses(course):
-	return getCourse(db.database, course)
+	courseinfo = []
+	for i in course.split('_'):
+		print i
+		info = getCourse(db.database, i)
+		if info == '':
+			continue
+		courseinfo += [info]
+
+
+
+
+	return json.dumps({'courses': courseinfo})
 
 
 @app.route("/login", methods=['POST'])
