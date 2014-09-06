@@ -44,7 +44,7 @@
 
             <div class="container">
               <div class="row" id="gradBar">
-                <h2 style="text-align:left">Graduation progress</h2>
+                <h2 style="text-align:center">Graduation progress</h2>
                 <div class="col-md-11">
                   <div class="progress" >
                     <div class="progress-bar progress-bar-success" style="width: 0%">
@@ -60,7 +60,7 @@
                 </div>
               </div>
               <div class="row" id="genEdBar">
-                <h2 style="text-align:left">GenEd progress</h2>
+                <h2 style="text-align:center">GenEd progress</h2>
                 <div class="col-md-11">
                   <div class="progress" >
                     <div class="progress-bar progress-bar-success" style="width: 0%">
@@ -77,23 +77,24 @@
               </div>
 
               <div class="row">
-                <p style="font-size:30px; margin-left:100px"> Level 1 </p>
-                <table style= "width:50%">
-                <td><div id="nsm0" class="col-md-3 col-md-offset-1 col-gened gened_1 bg-success">NSM</div></td>
-                <td><div id="nsm1" class="col-md-4 col-gened gened_1">NSM</div></td>
-                <td><div id="nsm2" class="col-md-3 col-gened gened_1">NSM</div></td>
-                </table>
-                <table style="width:50%">
-                <td><div id="ha0" class="col-md-3 col-md-offset-1 col-gened gened_1">HA</div></td>
-                <td><div id="ha1" class="col-md-4 col-gened gened_2">HA</div></td>
-                <td><div id="ha2" class="col-md-3 col-gened gened_3">HA</div></td>
-                </table>
-                <table style= "width:50%">
-                <td><div id="sbs0" class="col-md-3 col-md-offset-1 col-gened gened_1">SBS</div></td>
-                <td><div id="sbs1" class="col-md-4 col-gened gened_2">SBS</div></td>
-                <td><div id="sbs2" class="col-md-3 col-gened gened_3">SBS</div></td>
-              </table>
+                <!-- <p style="font-size:30px; margin-left:100px"> Level 1 </p> -->
+                
+                <div id="nsm0" class="col-md-3 col-md-offset-1 col-gened gened_1 bg-success">NSM</div>
+                <div id="nsm1" class="col-md-4 col-gened gened_1">NSM</div>
+                <div id="nsm2" class="col-md-3 col-gened gened_1">NSM</div>
+                
+                
+                <div id="ha0" class="col-md-3 col-md-offset-1 col-gened gened_1">HA</div>
+                <div id="ha1" class="col-md-4 col-gened gened_2">HA</div>
+                <div id="ha2" class="col-md-3 col-gened gened_3">HA</div>
+                
+                
+                <div id="sbs0" class="col-md-3 col-md-offset-1 col-gened gened_1">SBS</div>
+                <div id="sbs1" class="col-md-4 col-gened gened_2">SBS</div>
+                <div id="sbs2" class="col-md-3 col-gened gened_3">SBS</div>
+              
               </div>
+              </br>
               {% if data['majorData'][0] %}
               <div class="row" id="major0bar">
                 <h2>{{data['majorData'][0]['name']}}</h2>
