@@ -37,8 +37,9 @@ def courses(course):
 def login():
 	user = request.form['username']
 	passw = request.form['password']
-	classes = returnData(user,passw)
-	return render_template("index.html")
+	data = returnData(user,passw)
+	
+	return data#render_template("index.html")
 
 
 def returnData(username, password):
