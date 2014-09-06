@@ -11,7 +11,13 @@ $(document).ready(function(){
 function majorProgress(data){
 	var majors = data['acadData']['major'].split(',')
 	for (var i = 0; i < majors.length; i++){
-		updateProgress("major" + i + "bar", 5, 2, 10)
+		taken = parseInt(data['majorData'][i]['reqsTaken'].length) + parseInt(data['majorData'][i]['t1Taken'].length) + parseInt(data['majorData'][i]['t2Taken'].length) + parseInt(data['majorData'][i]['t3Taken'].length)
+		current = parseInt(data['majorData'][i]['reqsCurr'].length) + parseInt(data['majorData'][i]['t1Current'].length) + parseInt(data['majorData'][i]['t2Current'].length) + parseInt(data['majorData'][i]['t3Current'].length)
+		reqs = parseInt(data['majorData'][i]['reqsTaken'].length) + parseInt(data['majorData'][i]['reqsCurr'].length) + + parseInt(data['majorData'][i]['reqsLeft'].length)
+		electives = parseInt(data['majorData'][i]['t1Total']) + parseInt(data['majorData'][i]['t2Total']) + parseInt(data['majorData'][i]['t3Total'])
+		total = reqs + electives
+		console.log([reqs,electives,total])
+		updateProgress("major" + i + "bar", taken, current, total)
 		// majors[i]
 	}
 }
@@ -77,6 +83,7 @@ function deptCount(dept, array) {
 }
 
 function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
+	console.log([progressID, takenCourses, takingCourses, totalCourses])
 	$("#"+progressID).find(".progress-bar-success").css("width", (takenCourses/totalCourses*100)+'%')
 	$("#"+progressID).find(".progress-bar-warning").css("width", (takingCourses/totalCourses*100)+'%')
 	$("#"+progressID).find("p").text((takenCourses+takingCourses)+'/'+totalCourses)
