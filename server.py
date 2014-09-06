@@ -90,7 +90,13 @@ def isElective(course, elStrs):
 
 def parseMajorData(majorName, classes):
 	#major = getMajor(db.database, 'Mathematics')
+	classTaken = classes[2:]#['taken']
+	classCurr = classes[:2] #classes['current']
+
+	allClasses = classTaken + classCurr
+
 	reqsTaken = []
+	reqsCurr = []
 	reqsLeft = []
 
 	major = getMajor(db.database, majorName)
@@ -103,18 +109,24 @@ def parseMajorData(majorName, classes):
 		if 'or' in r:
 			for r2 in r[1:-1].split(' or '):
 				print r2
-				if r2 in classes:
+				if r2 in allClasses:
 					reqsTaken += [r2]
 					rt = True
-		if r in classes:
+		if r in allClasses:
 			reqsTaken += [r]
 			rt = True
 		if not rt:
 			reqsLeft += [r]
 
+	reqsCurr = [i for i in reqsTaken if i in classCurr]
+	reqsTaken = [i for i in reqsTaken if i not in classCurr]
+
 	t1Taken = []
 	t2Taken = []
 	t3Taken = []
+	t1Current = []
+	t2Current = []
+	t3Current = []
 	elStrs1 = []
 	elStrs2 = []
 	elStrs3 = []
@@ -130,20 +142,32 @@ def parseMajorData(majorName, classes):
 		elStrs3 += re.split(', |\|\|', t3els)		
 	
 	for course in classes:
-		if course in reqsTaken:
+		if course in reqs:
 			continue
 		if isElective(course, elStrs1):
-			t1Taken += [course]
+			if course in classCurr:
+				t1Current += [course]
+			else:
+				t1Taken += [course]
 		elif isElective(course, elStrs2):
-			t2Taken += [course]
+			if course in classCurr:
+				t2Current += [course]
+			else:
+				t2Taken += [course]
 		elif isElective(course, elStrs3):
-			t3Taken += [course]
-
+			if course in classCurr:
+				t3Current += [course]
+			else:
+				t3Taken += [course]
 
 	majorDat = {
 		'name': majorName,
 		'reqsTaken': reqsTaken,
+		'reqsCurr': reqsCurr,
 		'reqsLeft': reqsLeft,
+		't1Current': t1Current,
+		't2Current': t2Current,
+		't3Current': t3Current,
 		't1Taken': t1Taken,
 		't2Taken': t2Taken,
 		't3Taken': t3Taken

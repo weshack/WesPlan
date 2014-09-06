@@ -16,6 +16,16 @@
     margin: 0 auto;
 }
 
+.gened_2{
+	border-right: 1px solid gray;
+}
+
+.col-gened{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align:center;
+}
+
 h2{
 	text-align: center;
 }
