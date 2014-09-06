@@ -45,8 +45,33 @@ def login():
 	return data#academicData#render_template("index.html")
 
 
-def parseMajorData(major, classes):
-	return getMajor(db.database, 'Mathematics')
+def parseMajorData(majorName, classes):
+	major = getMajor(db.database, 'Mathematics')
+	reqsTaken = []
+	reqsLeft = []
+	#major = getMajor(db.database, majorName)
+	reqs =  major['requiredCourses']
+	for r in reqs:
+		rt = False
+		if 'or' in r:
+			for r2 in r[1:-1].split('or'):
+				if r2 in classes:
+					reqsTaken += [r]
+					rt = True
+		if r in classes:
+			reqsTaken += [r]
+			rt = True
+		if not rt:
+			reqsLeft += [r]
+
+	electives = major[]
+			 
+	# majorDat = {
+	# 	'name': majorName,
+	# 	'reqTaken': 
+
+	# }
+	return major
 
 def returnData(username, password):
 	data = getUserData(username,password)

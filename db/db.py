@@ -27,18 +27,19 @@ def getMajor(conn, major):
 	
 	name = major
 
-	tp = r[2]
-
 	return {
 		'name': major,
 		'type': r[2],
 		'preDeclareCourses': parseCourses(r[3]),
 		'requiredCourses': parseCourses(r[4]),
 		'tier1Electives': r[5],
-		'tier1Number': r[7],
 		'tier2Electives': r[6],
-		'tier2Number': r[8],
-		'genEd': r[9]
+		'tier3Electives': r[7]
+		'tier1Number': r[8],
+		'tier2Number': r[9],
+		'tier3Number': r[10]
+		'genEd': r[11]
+		'title': r[12]
 		}
 
 
