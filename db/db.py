@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def connect_database():
 	return sqlite3.connect('db/wesplan.db')
 
@@ -14,25 +15,39 @@ def getMajors(conn):
 		'majors':majs
 		}
 
+def parseCourses(courseStr):
+	return map((lambda x : x.replace('||', " or ")), courseStr.split('&&'))
+
+
 def getMajor(conn, major):
 	c = conn.cursor()
-	major = major.capitalize()
+	#major = major.capitalize()
+	print "*"*20, major
 	try:
 		r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
+		name = major
 	except:
 		continue
+
 	
+
 	return {
 		'name': major,
-		'type': r[2].split('&&'),
-		'preDeclareCourses': r[3],
-		'requiredCourses': r[4],
+		'type': r[2],
+		'preDeclareCourses': parseCourses(r[3]),
+		'requiredCourses': parseCourses(r[4]),
 		'tier1Electives': r[5],
-		'tier1Number': r[7],
 		'tier2Electives': r[6],
-		'tier2Number': r[8],
-		'genEd': r[9]
+		'tier3Electives': r[7],
+		'tier1Number': r[8],
+		'tier2Number': r[9],
+		'tier3Number': r[10],
+		'genEd': r[11],
+		'title': r[12]
 		}
+
+
+
 
 
 def getCourse(conn, course):
