@@ -31,13 +31,67 @@ h2{
 }
 
 .col-gened {
-	color: red;   
-    padding: 5px;     
-    border: 5px solid rgb(57, 12, 12);     
+	color: black;   
+    padding: 10px;     
+    border: 5px solid;
+    border-color: green;     
     border-radius: 25px;
     /* margin: 0; */
 }
 
+#nsm0 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#nsm1 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#nsm2 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#ha0 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#ha1 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#ha2 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#sbs0 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#sbs1 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#sbs2 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
 
 
 
