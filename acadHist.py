@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import mechanize
 import cookielib
+import re
 
 def getUserData(username,password):
 	br = mechanize.Browser()
@@ -29,11 +30,13 @@ def getUserData(username,password):
 	x = {'name':str(head[0][5:-4].strip()), 'year':int(head[0][-4:].strip()),
 	 'major':str(head[1].split(':')[1].strip()), 'minor':str(head[2].split(':')[1].strip()), 'certificate':str(head[3].split(':')[1].strip())}
 	
-
+	preCred = 0.0
+	preReq = False
 	#classes dumped in one array
 	x['classes'] = []
 	for tr in soup.find_all('tr'):
 		if "Cumulative Earned Credits" not in tr.get_text():
+
 			if tr.find_all('a') != [] and 'ALTGPA' not in tr.get_text():
 				name = str(tr.find_all('a')[0].get_text().split("-")[0])
 				credit = str(tr.find_all('td', align="right")[0].get_text().strip())
@@ -43,7 +46,13 @@ def getUserData(username,password):
 					current = True
 				credit = float(credit)
 				x['classes'].append({"name": name, "credit": credit, "current": current})
-
+			if tr.find_all(text=re.compile("Pre-Matric")) != []:
+				preReq = True
+		elif preReq == True:
+			preCred = float(str(tr.find_all('td', align="right")[0].get_text().strip()))
+			preReq = False
+	x['preMatric'] = preCred
+	
 	#classes sorted by semester
 	# for tr in soup.find_all('tr'):
 	# 	if "Cumulative Earned Credits" not in tr.get_text():
@@ -54,5 +63,11 @@ def getUserData(username,password):
 	# 		if tr.find_all('a') != [] and 'ALTGPA' not in tr.get_text():
 	# 			o = str(tr.find_all('a')[0].get_text().split("-")[0])
 	# 			x[current].append(o)
-
+	print x
 	return x
+
+
+
+
+
+getUserData("mspiegelman","zoemax1453")
