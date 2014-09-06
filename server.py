@@ -37,10 +37,10 @@ def courses(course):
 
 @app.route("/login", methods=['POST'])
 def login():
-	user = request.form['username']
-	passw = request.form['password']
-	data = returnData(user,passw)
-	
+	# user = request.form['username']
+	# passw = request.form['password']
+	# data = returnData(user,passw)
+	data={}
 
 	return render_template("index.html", data=json.dumps(data))
 

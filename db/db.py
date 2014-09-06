@@ -28,6 +28,7 @@ def getMajor(conn, major):
 		name = major
 	except:
 		print "error getting major"
+		return {}
 
 	return {
 		'name': major,
