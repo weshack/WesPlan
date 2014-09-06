@@ -1,16 +1,17 @@
 from flask import Flask
 from flask import request
+from flask import render_template
 from acadHist import getUserData
 from db.db import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", template_folder="static")
 @app.before_request
 def db():
 	db.database = connect_database()
 
 @app.route("/")
 def main():
-	return "Hello world"
+	return render_template('login.html')
 
 @app.route("/majors")
 def majors():
@@ -32,22 +33,18 @@ def major(major):
 def courses(course):
 	return getCourse(db.database, course)
 
-@app.route("login", methods=['POST'])
+@app.route("/login", methods=['POST'])
 def login():
 	user = request.form['username']
 	passw = request.form['password']
-	classes = getUserData(user,passw)
-	return classes
+	data = returnData(user,passw)
+	
+	return data#render_template("index.html")
 
 
-@app.route("/userdata/", methods=['POST'])
-def returnData():
-	print request.form
-	user = request.form['username']
-	passw = request.form['password']
-	classes = getUserData(user,passw)
+def returnData(username, password):
+	classes = getUserData(username,password)
 	return str(classes)
-	# return ', '.join(classes)
 
 if __name__ == "__main__":
 	app.debug = True
