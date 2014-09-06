@@ -54,13 +54,9 @@ function gradProgress(data){
 		}
 		console.log([credits, nsmSum, sbsSum, haSum])
 		updateProgress("genEdBar", nsmSum+sbsSum+haSum, 0, 9)
-<<<<<<< HEAD
 		updateGenEds(nsmSum, sbsSum, haSum)
 
-		return [credSum, nsmSum, sbsSum, haSum]
-=======
 		return [credits, nsmSum, sbsSum, haSum]
->>>>>>> ad9dae9e81bcbb05965873994ead7e13a1179b07
 	})
 }
 function deptCount(dept, array) {
@@ -77,7 +73,20 @@ function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
 	$("#"+progressID).find("p").text((takenCourses+takingCourses)+'/'+totalCourses)
 }
 
-
+function updateGenEds(nsmSum, sbsSum, haSum) {
+	for(var i = 0; i < nsmSum; i++) {
+		console.log("#"+"nsm"+i.toString())
+		$("#"+"nsm"+i.toString()).addClass("bg-success")
+	}
+	for(var i = 0; i < sbsSum; i++) {
+		console.log("#"+"sbs"+i.toString())
+		$("#"+"sbs"+i.toString()).addClass("bg-success")
+	}
+	for(var i = 0; i < haSum; i++) {
+		console.log("#"+"ha"+i.toString())
+		$("#"+"ha"+i.toString()).addClass("bg-success")
+	}
+}
 
 
 
