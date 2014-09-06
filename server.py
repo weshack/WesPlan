@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 from flask import render_template
 from acadHist import getUserData
@@ -42,8 +42,10 @@ def login():
 	passw = request.form['password']
 	data = returnData(user,passw)
 	#data={}
-	return data
-	#return render_template("index.html", data=json.dumps(data))
+	#return data
+
+	return render_template("index.html", data=json.dumps(data))
+
 
 
 def isElective(course, elStrs):
@@ -145,10 +147,7 @@ def returnData(username, password):
 		'acadData': academicData,
 		'majorData': majorData
 	}
-
-	
-
-	return str(data)
+	return data
 if __name__ == "__main__":
 	app.debug = True
 	app.run()
