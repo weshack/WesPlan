@@ -27,9 +27,7 @@ def getMajor(conn, major):
 		r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
 		name = major
 	except:
-		continue
-
-	
+		print "error getting major"
 
 	return {
 		'name': major,
