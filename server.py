@@ -4,6 +4,7 @@ from flask import render_template
 from acadHist import getUserData
 from db.db import *
 import json
+import re
 
 app = Flask(__name__, static_folder="static", template_folder="static")
 @app.before_request
@@ -37,12 +38,12 @@ def courses(course):
 
 @app.route("/login", methods=['POST'])
 def login():
-	# user = request.form['username']
-	# passw = request.form['password']
-	# data = returnData(user,passw)
-	data={}
-
-	return render_template("index.html", data=json.dumps(data))
+	user = request.form['username']
+	passw = request.form['password']
+	data = returnData(user,passw)
+	#data={}
+	return data
+	#return render_template("index.html", data=json.dumps(data))
 
 
 def isElective(course, elStrs):
@@ -78,14 +79,19 @@ def parseMajorData(majorName, classes):
 	#major = getMajor(db.database, 'Mathematics')
 	reqsTaken = []
 	reqsLeft = []
+
 	major = getMajor(db.database, majorName)
+	if not major:
+		return 'DNE'
+
 	reqs =  major['requiredCourses']
 	for r in reqs:
 		rt = False
 		if 'or' in r:
-			for r2 in r[1:-1].split('or'):
+			for r2 in r[1:-1].split(' or '):
+				print r2
 				if r2 in classes:
-					reqsTaken += [r]
+					reqsTaken += [r2]
 					rt = True
 		if r in classes:
 			reqsTaken += [r]
@@ -119,26 +125,30 @@ def parseMajorData(majorName, classes):
 			t3Taken += [course]
 
 
-
-
-
-			 
-	# majorDat = {
-	# 	'name': majorName,
-	# 	'reqTaken': 
-
-	# }
-	return major
+	majorDat = {
+		'name': majorName,
+		'reqsTaken': reqsTaken,
+		'reqsLeft': reqsLeft,
+		't1Taken': t1Taken,
+		't2Taken': t2Taken,
+		't3Taken': t3Taken
+	}
+	return majorDat
 
 def returnData(username, password):
-	data = getUserData(username,password)
+	academicData = getUserData(username,password)
 	
-	majorData = map(lambda x: parseMajorData(x, data['classes']), data['major'].split(','))
+	majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
 	print majorData
+
+	data = {
+		'acadData': academicData,
+		'majorData': majorData
+	}
+
 	
 
 	return str(data)
-
 if __name__ == "__main__":
 	app.debug = True
 	app.run()
