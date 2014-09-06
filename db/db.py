@@ -21,7 +21,7 @@ def parseCourses(courseStr):
 
 def getMajor(conn, major):
 	c = conn.cursor()
-	major = major.capitalize()
+	#major = major.capitalize()
 	print "*"*20, major
 	r = list(c.execute("select * from majors where name='{0}'".format(major)).next())
 	
@@ -34,11 +34,11 @@ def getMajor(conn, major):
 		'requiredCourses': parseCourses(r[4]),
 		'tier1Electives': r[5],
 		'tier2Electives': r[6],
-		'tier3Electives': r[7]
+		'tier3Electives': r[7],
 		'tier1Number': r[8],
 		'tier2Number': r[9],
-		'tier3Number': r[10]
-		'genEd': r[11]
+		'tier3Number': r[10],
+		'genEd': r[11],
 		'title': r[12]
 		}
 

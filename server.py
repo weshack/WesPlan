@@ -45,11 +45,40 @@ def login():
 	return data#academicData#render_template("index.html")
 
 
+def isElective(course, elStrs):
+	for elStr in elStrs:
+		if not elStr[:4] == course[:4]:
+			continue
+
+		courseNum = int(course[-3:])
+
+		if course == elStr:
+			return True
+
+		#Lower bound
+		if elStr[-1] == '+':
+			if int(elStr[-4:-1]) < courseNum:
+				return True
+			else:
+				continue
+		#range
+		if '-' in elStr:
+			a = int(elStr[-3:])
+			b = int(elStr[-7:-4])
+			if (b < courseNum) and (courseNum < a):
+				return True
+			else:
+				continue
+
+	return False
+
+
+
 def parseMajorData(majorName, classes):
-	major = getMajor(db.database, 'Mathematics')
+	#major = getMajor(db.database, 'Mathematics')
 	reqsTaken = []
 	reqsLeft = []
-	#major = getMajor(db.database, majorName)
+	major = getMajor(db.database, majorName)
 	reqs =  major['requiredCourses']
 	for r in reqs:
 		rt = False
@@ -64,7 +93,19 @@ def parseMajorData(majorName, classes):
 		if not rt:
 			reqsLeft += [r]
 
-	electives = major[]
+	electivesTaken = []
+
+	t1els = major['tier1Electives']
+	elStrs = t1els.split(', ')
+	print elStrs
+	for course in classes:
+		if isElective(course, elStrs):
+			electivesTaken += [course]
+
+	print electivesTaken
+
+
+
 			 
 	# majorDat = {
 	# 	'name': majorName,
