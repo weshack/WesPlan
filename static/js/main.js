@@ -84,8 +84,16 @@ function deptCount(dept, array) {
 
 function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
 	console.log([progressID, takenCourses, takingCourses, totalCourses])
-	$("#"+progressID).find(".progress-bar-success").css("width", (takenCourses/totalCourses*100)+'%')
-	$("#"+progressID).find(".progress-bar-warning").css("width", (takingCourses/totalCourses*100)+'%')
+	takenPercent = takenCourses/totalCourses*100
+	takingPercent = takingCourses/totalCourses*100
+	toTakePercent = 100-(takenPercent+takingPercent)
+	toTakeCourses = totalCourses - (takenCourses+takingCourses)
+	$("#"+progressID).find(".progress-bar-success").css("width", takenPercent+'%')
+	$("#"+progressID).find(".progress-bar-success").find("span").text(takenCourses+ " credits")
+	$("#"+progressID).find(".progress-bar-warning").css("width", takingPercent+'%')
+	$("#"+progressID).find(".progress-bar-warning").find("span").text(takingCourses+ " credits")
+	$("#"+progressID).find(".progress-bar-emptySpace").css("width", toTakePercent+'%')
+	$("#"+progressID).find(".progress-bar-emptySpace").find("span").text(toTakeCourses + " credits")
 	$("#"+progressID).find("p").text((takenCourses+takingCourses)+'/'+totalCourses)
 }
 

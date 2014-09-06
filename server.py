@@ -52,8 +52,7 @@ def login():
 	user = request.form['username']
 	passw = request.form['password']
 	data = returnData(user,passw)
-	#data={}
-	#return data
+	
 	return render_template("index.html", data=data, jsonData=json.dumps(data))
 
 
