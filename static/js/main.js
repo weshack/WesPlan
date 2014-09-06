@@ -2,10 +2,19 @@ console.log('js')
 $(document).ready(function(){
 	console.log("ready")
 	var gradGenEd = gradProgress(userData);
+	var majorInfo = majorProgress(userData);
+	console.log(majorInfo)
 	console.log(gradGenEd)
 	
 });
 
+function majorProgress(data){
+	var majors = data['acadData']['major'].split(',')
+	for (var i = 0; i < majors.length; i++){
+		updateProgress("major" + i + "bar", 5, 2, 10)
+		// majors[i]
+	}
+}
 function gradProgress(data){
 	var courses = data['acadData']['classes']
 	var credits = 0  //TOTAL credits
