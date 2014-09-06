@@ -52,6 +52,7 @@ function gradProgress(data){
 				}
 			}
 		}
+		console.log([credits, nsmSum, sbsSum, haSum])
 		updateProgress("genEdBar", nsmSum+sbsSum+haSum, 0, 9)
 		return [credits, nsmSum, sbsSum, haSum]
 	})

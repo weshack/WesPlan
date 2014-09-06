@@ -55,7 +55,7 @@ def login():
 	#data={}
 	#return data
 
-	return render_template("index.html", data=data)#data=json.dumps(data))
+	return render_template("index.html", data=data, jsonData=json.dumps(data))
 
 
 
