@@ -119,6 +119,8 @@ def parseMajorData(majorName, classes):
 		elStrs3 += re.split(', |\|\|', t3els)		
 	
 	for course in classes:
+		if course in reqsTaken:
+			continue
 		if isElective(course, elStrs1):
 			t1Taken += [course]
 		elif isElective(course, elStrs2):
