@@ -63,11 +63,4 @@ def getUserData(username,password):
 	# 		if tr.find_all('a') != [] and 'ALTGPA' not in tr.get_text():
 	# 			o = str(tr.find_all('a')[0].get_text().split("-")[0])
 	# 			x[current].append(o)
-	print x
 	return x
-
-
-
-
-
-getUserData("mspiegelman","zoemax1453")

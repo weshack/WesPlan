@@ -30,7 +30,13 @@ h2{
 	text-align: center;
 }
 
-
+.col-gened {
+	color: red;   
+    padding: 5px;     
+    border: 5px solid rgb(57, 12, 12);     
+    border-radius: 25px;
+    /* margin: 0; */
+}
 
 
 
