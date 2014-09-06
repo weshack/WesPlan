@@ -90,6 +90,9 @@ def getMajorReqs(classes, major):
 	reqs = major['requiredCourses']
 	names = map(lambda x: x['name'], classes)
 	currents = map(lambda x: x['current'], classes)
+	print classes
+	for i in range(len(names)):
+		print names[i], currents[i]	
 	reqsTaken = []
 	reqsCurr = []
 	reqsLeft = []
@@ -101,13 +104,13 @@ def getMajorReqs(classes, major):
 			for r2 in r[1:-1].split(' or '):
 				print r2
 				if r2 in names:
-					if currents[i]:
+					if currents[names.index(r2)]:
 						reqsCurr += [r2]
 					else:
 						reqsTaken += [r2]
 					rt = True
 		if r in names:
-			if currents[i]:
+			if currents[names.index(r)]:
 				reqsCurr += [r]
 			else:
 				reqsTaken += [r]
