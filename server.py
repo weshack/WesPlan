@@ -122,7 +122,7 @@ def getMajorReqs(classes, major):
 	return (reqsTaken, reqsCurr, reqsLeft)
 
 
-def parseMajorData(majorName, classes):
+def parseMajorData(majorName, classes, minor=False):
 	if majorName == '':
 		return ''
 	#major = getMajor(db.database, 'Mathematics')
@@ -130,8 +130,10 @@ def parseMajorData(majorName, classes):
 	reqsTaken = []
 	reqsCurr = []
 	reqsLeft = []
-
-	major = getMajor(db.database, majorName)
+	if minor:
+		major = getMinor(db.database, majorName)
+	else:
+		major = getMajor(db.database, majorName)
 	majorTitle = str(major['title'])
 	if not major:
 		return 'DNE'
@@ -184,7 +186,7 @@ def parseMajorData(majorName, classes):
 	print majorTitle
 	majorDat = {
 		'name': majorName,
-		'title': majorTitle,
+		'title': majorTitle + (' minor' if minor else ' major'),
 		'reqsTaken': reqsTaken,
 		'reqsCurr': reqsCurr,
 		'reqsLeft': reqsLeft,
@@ -209,6 +211,7 @@ def returnData(username, password):
 	print academicData
 	print '*'*5
 	majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
+	majorData += map(lambda x: parseMajorData(x, academicData['classes'], minor=True), academicData['minor'].split(','))
 
 	data = {
 		'acadData': academicData,
