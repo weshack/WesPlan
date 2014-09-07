@@ -5,13 +5,43 @@ $(document).ready(function(){
 	var majorInfo = majorProgress(userData);
 	console.log(majorInfo)
 	console.log(gradGenEd)
-	majorCourses(userData)
-	customMajor('PHYS', userData)
+
+	for (var i = 0; i < userData['majorData'].length; i++){
+			majorCourses(userData['majorData'][i], '#major'+i+'courses')
+	}
+	loadCustomMajor()
+	$('#major-select').change(function(){
+
+		onCustomMajor(userData)
+	})
+
+	// customMajor('PHYS', userData)
 });
 
-function customMajor(majorName, data){
-	console.log(data)
-	$.getJSON('custom_major/' + majorName,{acadData: JSON.stringify(data['acadData'])}, function(){
+function loadCustomMajor(){
+	$.getJSON('majors', function(data){
+		majors = data['majors']
+		for (var i = 0; i < majors.length; i++){
+			$('#major-select').append('<option>'+majors[i]+'</option>')
+
+		}
+	});
+}
+
+function onCustomMajor(data){
+	majorName = $('#major-select option:selected').text()
+
+	$.getJSON('custom_major/'+majorName, {acadData:JSON.stringify(data['acadData'])}, function(majorData){
+		$('#custom_courses').children().children('li').remove();
+		$('#custom_bar').children('h2').text(majorData['title'])
+		majorCourses(majorData, '#custom_courses')
+
+		taken = parseInt(majorData['reqsTaken'].length) + parseInt(majorData['t1Taken'].length) + parseInt(majorData['t2Taken'].length) + parseInt(majorData['t3Taken'].length)
+		current = parseInt(majorData['reqsCurr'].length) + parseInt(majorData['t1Current'].length) + parseInt(majorData['t2Current'].length) + parseInt(majorData['t3Current'].length)
+		reqs = parseInt(majorData['reqsTaken'].length) + parseInt(majorData['reqsCurr'].length) + + parseInt(majorData['reqsLeft'].length)
+		electives = parseInt(majorData['t1Total']) + parseInt(majorData['t2Total']) + parseInt(majorData['t3Total'])
+		total = reqs + electives
+		updateProgress("custom_bar", taken, current, total)
 
 	});
 
@@ -25,16 +55,15 @@ function majorProgress(data){
 		reqs = parseInt(data['majorData'][i]['reqsTaken'].length) + parseInt(data['majorData'][i]['reqsCurr'].length) + + parseInt(data['majorData'][i]['reqsLeft'].length)
 		electives = parseInt(data['majorData'][i]['t1Total']) + parseInt(data['majorData'][i]['t2Total']) + parseInt(data['majorData'][i]['t3Total'])
 		total = reqs + electives
-		console.log([reqs,electives,total])
 		updateProgress("major" + i + "bar", taken, current, total)
 		// majors[i]
 	}
 }
 
 function displayCourses(majorData, majorSelector, current, taken, core, coreTotal, electives){
-	console.log(coreTotal)
+
 	var courseStr = coreTotal.concat(taken.concat(current)).join('_')
-	console.log(courseStr)
+
 
 	$.getJSON('courses/'+courseStr, function(courseData){
 		courseData = courseData['courses']
@@ -52,8 +81,7 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 
 		for (var j = 0; j < current.length;  j++){
 			var courses = $.grep(courseData, function(e){return (e['department'] + e['number']) == current[j];});
-			console.log(courses)
-			console.log(courseData)
+
 			 if (courses.length == 0){
 			 	majorSelector.children('#taken').append('<li class="classTaking">' + current[j]+ '</li>')
 			 }
@@ -70,7 +98,7 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 				n1 = name.substring(1,name.length-1).split(' or ')[0]
 				n2 = name.substring(1,name.length-1).split(' or ')[1]
 
-				console.log(courseData)
+
 
 				var course1 = $.grep(courseData, function(e){return (e['department'] + e['number']) == n1;});
 				var course2 = $.grep(courseData, function(e){return (e['department'] + e['number']) == n2;});
@@ -126,51 +154,50 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 
 }
 
-function majorCourses(data){
-	console.log(data['majorData'])
-	for (var i = 0; i < data['majorData'].length; i++){
+function majorCourses(majorData, selector){
+	majorSelector = $(selector)
 
-		var majorData = data['majorData'][i]
-		var majorSelector = $('#major'+i+'courses')
+	// var majorData = data['majorData'][i]
+	//var majorSelector = $('#major'+majorNum+'courses')
 
 
-		var current = majorData['reqsCurr']
+	var current = majorData['reqsCurr']
 
-		var taken = []
-		taken = taken.concat(majorData['reqsTaken'])
-		taken = taken.concat(majorData['t1Taken'])
-		taken = taken.concat(majorData['t2Taken'])
-		taken = taken.concat(majorData['t3Taken'])
+	var taken = []
+	taken = taken.concat(majorData['reqsTaken'])
+	taken = taken.concat(majorData['t1Taken'])
+	taken = taken.concat(majorData['t2Taken'])
+	taken = taken.concat(majorData['t3Taken'])
 
-		var core = majorData['reqsLeft']
-		console.log(core)
-		coreTotal = []
-		for (var j = 0; j < core.length;j++){
-			var name = core[j]
-			if (name.indexOf(" or ")>01){
-				n1 = name.substring(1,name.length-1).split(' or ')[0]
-				n2 = name.substring(1,name.length-1).split(' or ')[1]
-				coreTotal.push(n1)
-				coreTotal.push(n2)
-			}
-			else{
-				coreTotal.push(name)
-			}
+	var core = majorData['reqsLeft']
+	console.log(core)
+	coreTotal = []
+	for (var j = 0; j < core.length;j++){
+		var name = core[j]
+		if (name.indexOf(" or ")>01){
+			n1 = name.substring(1,name.length-1).split(' or ')[0]
+			n2 = name.substring(1,name.length-1).split(' or ')[1]
+			coreTotal.push(n1)
+			coreTotal.push(n2)
 		}
+		else{
+			coreTotal.push(name)
+		}
+	}
 
-		var electives = []
-		electives = electives.concat(majorData['t1Strings'])
-		electives = electives.concat(majorData['t2Strings'])
-		electives = electives.concat(majorData['t3Strings'])
+	var electives = []
+	electives = electives.concat(majorData['t1Strings'])
+	electives = electives.concat(majorData['t2Strings'])
+	electives = electives.concat(majorData['t3Strings'])
 
-		displayCourses(majorData, majorSelector, current, taken, core, coreTotal, electives)
-		// var courseStr = (electives.concat(coreTotal.concat(taken))).join('_')
-		// console.log(courseStr)
-		// console.log(majorData)
-		// console.log(majorData)
+	displayCourses(majorData, majorSelector, current, taken, core, coreTotal, electives)
+	// var courseStr = (electives.concat(coreTotal.concat(taken))).join('_')
+	// console.log(courseStr)
+	// console.log(majorData)
+	// console.log(majorData)
 		// console.log(courseData)
 
-	}
+	
 }
 
 function gradProgress(data){

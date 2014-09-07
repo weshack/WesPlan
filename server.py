@@ -19,10 +19,12 @@ def main():
 def majors():
 	f = getMajors(db.database)
 	s = ''
-	for e in f:
-		s += e
-		s += '</ br>'
-	return s
+
+	# for e in f:
+	# 	s += e
+	# 	s += '</ br>'
+
+	return json.dumps(f)
 
 @app.route("/major/<major>")
 def major(major):
