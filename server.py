@@ -51,8 +51,10 @@ def courses(course):
 def login():
 	user = request.form['username']
 	passw = request.form['password']
-	data = returnData(user,passw)
-	
+	try:
+		data = returnData(user,passw)
+	except IndexError, e:
+		return render_template("login.html", error="Wrong username or password")
 	return render_template("index.html", data=data, jsonData=json.dumps(data))
 
 
