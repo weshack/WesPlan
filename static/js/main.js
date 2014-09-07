@@ -22,46 +22,75 @@ function majorProgress(data){
 	}
 }
 
-function majorCourses(data){
-	console.log(data['majorData'])
-	for (var i = 0; i < data['majorData'].length; i++){
+function displayCourses(majorData, majorSelector, current, taken, core, coreTotal, electives){
+	console.log(coreTotal)
+	var courseStr = coreTotal.concat(taken.concat(current)).join('_')
+	console.log(courseStr)
 
-		majorData = data['majorData'][i]
-		majorSelector = $('#major'+i+'courses')
-
-
-		current = majorData['reqsCurr']
-
-		taken = []
-		taken = taken.concat(majorData['reqsTaken'])
-		taken = taken.concat(majorData['t1Taken'])
-		taken = taken.concat(majorData['t2Taken'])
-		taken = taken.concat(majorData['t3Taken'])
-
-		taking = []
-		taking = taking.concat(majorData['reqsCurr'])
-		taking = taking.concat(majorData['t1Current'])
-		taking = taking.concat(majorData['t2Current'])
-		taking = taking.concat(majorData['t3Current'])
-
+	$.getJSON('courses/'+courseStr, function(courseData){
+		courseData = courseData['courses']
 		for (var j = 0; j < taken.length;  j++){
-			majorSelector.children('#taken').append('<li class="classTaken">' + taken[j]+ '</li>')	
+			 var courses = $.grep(courseData, function(e){return (e['department'] + e['number']) == taken[j];});
+			 if (courses.length == 0){
+			 	majorSelector.children('#taken').append('<li class="classTaken">' + taken[j]+ '</li>')
+			 }
+			 else{
+			 	var course = courses[0]
+			 	var html = '<li class="classTaken"><a href='+course['url'] + '>' + taken[j]+ '</a></li>'
+			 	majorSelector.children('#taken').append(html)
+			 }
 		}
 
-		for (var j = 0; j < taking.length;  j++){
-			majorSelector.children('#taken').append('<li class="classTaking">' + taking[j]+ '</li>')	
+		for (var j = 0; j < current.length;  j++){
+			var courses = $.grep(courseData, function(e){return (e['department'] + e['number']) == current[j];});
+			console.log(courses)
+			console.log(courseData)
+			 if (courses.length == 0){
+			 	majorSelector.children('#taken').append('<li class="classTaking">' + current[j]+ '</li>')
+			 }
+			 else{
+			 	var course = courses[0]
+			 	var html = '<li class="classTaking"><a href='+course['url'] + '>' + current[j]+ '</a></li>'
+			 	majorSelector.children('#taken').append(html)
+			 }	
 		}
 
-		core = majorData['reqsLeft']
 		for (var j = 0; j < core.length;  j++){
 			name = core[j]
 			if (name.indexOf(" or ") > -1){
 				n1 = name.substring(1,name.length-1).split(' or ')[0]
 				n2 = name.substring(1,name.length-1).split(' or ')[1]
-				majorSelector.children('#core').append('<li>' + n1+ '</li>')
-				majorSelector.children('#core').append('<li>' + n2+ '</li>')
+
+				console.log(courseData)
+
+				var course1 = $.grep(courseData, function(e){return (e['department'] + e['number']) == n1;});
+				var course2 = $.grep(courseData, function(e){return (e['department'] + e['number']) == n2;});
+
+				if (course1.length == 0){
+					html1 = n1
+				} else{
+					html1 = '<a href=' + course1[0]['url'] + '>' + n1 + '</a>'
+				}
+				if (course2.length == 0){
+					html2 = n2
+				} else{
+					html2 = '<a href=' + course2[0]['url'] + '>' + n2 + '</a>'
+				}
+				majorSelector.children('#core').append('<li>' + html1 + " or " + html2 + '</li>')
+				// majorSelector.children('#core').append('<li>' + n1+ '</li>')
+				// majorSelector.children('#core').append('<li>' + n2+ '</li>')
 			}
-			else{majorSelector.children('#core').append('<li>' + name+ '</li>')}	
+			else{
+				var course =  $.grep(courseData, function(e){return (e['department'] + e['number']) == name;});
+				
+				if (course.length==0){
+					html = name
+				}else{
+					html = '<a href=' + course[0]['url'] + '>' + name + '</a>'
+				}
+
+				majorSelector.children('#core').append('<li>' + html+ '</li>')
+			}
 		}
 
 		tier1CoursesLeft = majorData['t1Total'] - (majorData['t1Taken'].length + majorData['t1Current'].length)
@@ -80,12 +109,61 @@ function majorCourses(data){
 		if (tier1CoursesLeft == 0 && tier2CoursesLeft == 0 && tier3CoursesLeft == 0) {
 			majorSelector.children('#elect').append('<li class="classTaken">No electives remaining!</li>')
 		}
-	}
+
+	})
 
 
 	
 
 }
+
+function majorCourses(data){
+	console.log(data['majorData'])
+	for (var i = 0; i < data['majorData'].length; i++){
+
+		var majorData = data['majorData'][i]
+		var majorSelector = $('#major'+i+'courses')
+
+
+		var current = majorData['reqsCurr']
+
+		var taken = []
+		taken = taken.concat(majorData['reqsTaken'])
+		taken = taken.concat(majorData['t1Taken'])
+		taken = taken.concat(majorData['t2Taken'])
+		taken = taken.concat(majorData['t3Taken'])
+
+		var core = majorData['reqsLeft']
+		console.log(core)
+		coreTotal = []
+		for (var j = 0; j < core.length;j++){
+			var name = core[j]
+			if (name.indexOf(" or ")>01){
+				n1 = name.substring(1,name.length-1).split(' or ')[0]
+				n2 = name.substring(1,name.length-1).split(' or ')[1]
+				coreTotal.push(n1)
+				coreTotal.push(n2)
+			}
+			else{
+				coreTotal.push(name)
+			}
+		}
+
+		var electives = []
+		electives = electives.concat(majorData['t1Strings'])
+		electives = electives.concat(majorData['t2Strings'])
+		electives = electives.concat(majorData['t3Strings'])
+
+		displayCourses(majorData, majorSelector, current, taken, core, coreTotal, electives)
+		// var courseStr = (electives.concat(coreTotal.concat(taken))).join('_')
+		// console.log(courseStr)
+		// console.log(majorData)
+		// console.log(majorData)
+		// console.log(courseData)
+
+	}
+}
+
 function gradProgress(data){
 	var courses = data['acadData']['classes']
 	var credits = data['acadData']['preMatric']

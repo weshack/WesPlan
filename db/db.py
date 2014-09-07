@@ -67,7 +67,9 @@ def getCourse(conn, course):
 		'genEdArea': r[1],
 		'url': r[4],
 		'credit': r[5],
+		'number': r[6],
 		'semester': r[8],
+		'department':r[9],
 		'gradingMode': r[10],
 		'description': r[11],
 		'sections': r[12]

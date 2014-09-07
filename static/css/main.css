@@ -64,7 +64,9 @@ h2{
 li {
 	list-style-type:none;
 }
-
+li a {
+	color:inherit;
+}
 .classTaken {
 	color:#5cb85c;
 }
