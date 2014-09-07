@@ -21,7 +21,7 @@ def parseCourses(courseStr):
 def getMinor(conn, minor):
 	c = conn.cursor()
 	#major = major.capitalize()
-	print "*"*20, major
+
 	try:
 		r = list(c.execute("select * from majors where name='{0}' and type='minor'".format(major)).next())
 		name = major
@@ -46,7 +46,7 @@ def getMinor(conn, minor):
 def getMajor(conn, major):
 	c = conn.cursor()
 	#major = major.capitalize()
-	print "*"*20, major
+
 	try:
 		r = list(c.execute("select * from majors where name='{0}' and type='major'".format(major)).next())
 		name = major
@@ -84,7 +84,6 @@ def getCourse(conn, course):
 	except:
 		print "Course doesn't exist"
 		return ''
-	print r
 	return {
 		'name': r[3],
 		'title': r[3],

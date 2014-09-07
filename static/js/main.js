@@ -6,7 +6,16 @@ $(document).ready(function(){
 	console.log(majorInfo)
 	console.log(gradGenEd)
 	majorCourses(userData)
+	customMajor('PHYS', userData)
 });
+
+function customMajor(majorName, data){
+	console.log(data)
+	$.getJSON('custom_major/' + majorName,{acadData: JSON.stringify(data['acadData'])}, function(){
+
+	});
+
+}
 
 function majorProgress(data){
 	var majors = data['acadData']['major'].split(',')

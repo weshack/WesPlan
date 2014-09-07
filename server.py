@@ -27,7 +27,6 @@ def majors():
 @app.route("/major/<major>")
 def major(major):
 	r =  getMajor(db.database, major)
-	print r
 	return r[1]
 	
 
@@ -35,16 +34,22 @@ def major(major):
 def courses(course):
 	courseinfo = []
 	for i in course.split('_'):
-		print i
 		info = getCourse(db.database, i)
 		if info == '':
 			continue
 		courseinfo += [info]
 
-
-
-
 	return json.dumps({'courses': courseinfo})
+
+@app.route("/custom_major/<major>")
+def custom_major(major):
+
+	acadData = json.loads(request.args.get('acadData', type=str))
+	majorData = parseMajorData(major, acadData['classes'])
+
+	print '*'*20,majorData
+
+	return json.dumps(majorData)
 
 
 @app.route("/login", methods=['POST'])
@@ -91,9 +96,7 @@ def getMajorReqs(classes, major):
 	reqs = major['requiredCourses']
 	names = map(lambda x: x['name'], classes)
 	currents = map(lambda x: x['current'], classes)
-	print classes
-	for i in range(len(names)):
-		print names[i], currents[i]	
+
 	reqsTaken = []
 	reqsCurr = []
 	reqsLeft = []
@@ -103,7 +106,6 @@ def getMajorReqs(classes, major):
 		rt = False
 		if 'or' in r:
 			for r2 in r[1:-1].split(' or '):
-				print r2
 				if r2 in names:
 					if currents[names.index(r2)]:
 						reqsCurr += [r2]
@@ -140,7 +142,6 @@ def parseMajorData(majorName, classes, minor=False):
 
 	(reqsTaken, reqsCurr, reqsLeft) = getMajorReqs(classes,major)
 
-	print reqsTaken
 
 	t1Taken = []
 	t2Taken = []
@@ -183,7 +184,6 @@ def parseMajorData(majorName, classes, minor=False):
 			else:
 				t3Taken += [name]
 
-	print majorTitle
 	majorDat = {
 		'name': majorName,
 		'title': majorTitle + (' minor' if minor else ' major'),
@@ -207,17 +207,15 @@ def parseMajorData(majorName, classes, minor=False):
 
 def returnData(username, password):
 	academicData = getUserData(username,password)
-	print '*'*5
-	print academicData
-	print '*'*5
+
 	majorData = map(lambda x: parseMajorData(x, academicData['classes']), academicData['major'].split(','))
 	majorData += map(lambda x: parseMajorData(x, academicData['classes'], minor=True), academicData['minor'].split(','))
-
+	majorData = filter(lambda a: a != '', majorData)
 	data = {
 		'acadData': academicData,
 		'majorData': majorData
 	}
-	print data
+
 	return data
 if __name__ == "__main__":
 	app.debug = True
