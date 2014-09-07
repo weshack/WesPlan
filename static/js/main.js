@@ -38,9 +38,18 @@ function majorCourses(data){
 		taken = taken.concat(majorData['t2Taken'])
 		taken = taken.concat(majorData['t3Taken'])
 
+		taking = []
+		taking = taking.concat(majorData['reqsCurr'])
+		taking = taking.concat(majorData['t1Current'])
+		taking = taking.concat(majorData['t2Current'])
+		taking = taking.concat(majorData['t3Current'])
 
 		for (var j = 0; j < taken.length;  j++){
-			majorSelector.children('#taken').append('<li>' + taken[j]+ '</li>')	
+			majorSelector.children('#taken').append('<li class="classTaken">' + taken[j]+ '</li>')	
+		}
+
+		for (var j = 0; j < taking.length;  j++){
+			majorSelector.children('#taken').append('<li class="classTaking">' + taking[j]+ '</li>')	
 		}
 
 		core = majorData['reqsLeft']
@@ -55,15 +64,21 @@ function majorCourses(data){
 			else{majorSelector.children('#core').append('<li>' + name+ '</li>')}	
 		}
 
-		electives = []
-		electives = electives.concat(majorData['t1Strings'])
-		electives = electives.concat(majorData['t2Strings'])
-		electives = electives.concat(majorData['t3Strings'])
+		tier1CoursesLeft = majorData['t1Total'] - (majorData['t1Taken'].length + majorData['t1Current'].length)
+		tier2CoursesLeft = majorData['t2Total'] - (majorData['t2Taken'].length + majorData['t2Current'].length)
+		tier3CoursesLeft = majorData['t3Total'] - (majorData['t3Taken'].length + majorData['t3Current'].length)
 
-		console.log(electives)
-
-		for (var j = 0; j < electives.length;  j++){
-			majorSelector.children('#elect').append('<li>' + electives[j]+ '</li>')
+		if (tier1CoursesLeft > 0){
+			majorSelector.children('#elect').append('<li>' + tier1CoursesLeft+ ' courses '+ majorData['t1Strings']+'</li>')
+		}
+		if (tier2CoursesLeft > 0){
+			majorSelector.children('#elect').append('<li>' + tier2CoursesLeft+ ' courses '+ majorData['t2Strings']+'</li>')
+		}
+		if (tier3CoursesLeft > 0){
+			majorSelector.children('#elect').append('<li>' + tier3CoursesLeft+ ' courses '+ majorData['t3Strings']+'</li>')
+		}
+		if (tier1CoursesLeft == 0 && tier2CoursesLeft == 0 && tier3CoursesLeft == 0) {
+			majorSelector.children('#elect').append('<li class="classTaken">No electives remaining!</li>')
 		}
 	}
 
@@ -149,7 +164,7 @@ function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
 	$("#"+progressID).find(".progress-bar-warning").find("span").text(takingCourses+ " credits")
 	$("#"+progressID).find(".progress-bar-emptySpace").css("width", toTakePercent+'%')
 	$("#"+progressID).find(".progress-bar-emptySpace").find("span").text(toTakeCourses + " credits")
-	$("#"+progressID).find("p").text((takenCourses+takingCourses)+'/'+totalCourses)
+	$("#"+progressID).find("p:contains('0/0')").text((takenCourses+takingCourses)+'/'+totalCourses)
 }
 
 function updateGenEds(nsmSum, sbsSum, haSum) {
