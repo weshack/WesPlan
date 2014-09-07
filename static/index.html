@@ -39,12 +39,12 @@
               <div class="container">
                 <h1>WesPlan</h1>
                 <p style="background-color:white">A tool for planning out your Wesleyan academic career</p>
-                <div class="progress progress-striped active" style="width:500px;margin-left:auto;margin-right:auto;" >
+                <div class="progress progress-striped active" style="width:45%;min-width:300px;margin-left:auto;margin-right:auto;" >
                   <div class="progress-bar progress-bar-success" style="width: 33%">
-                    <span style=";" class="">Classes completed</span>
+                    <span style=";" class="">Completed courses</span>
                   </div>
                   <div class="progress-bar progress-bar-warning" style="width: 33%">
-                    <span style=";" class="">Currently taking</span>
+                    <span style=";" class="">Current courses</span>
                   </div>
                   <div class="progress-bar progress-bar-emptySpace" style="width:34%">
                     <span style="color:black;" class="">Need to take</span>
@@ -206,8 +206,11 @@
                     </div>
                   </div>
                   {% endif %}
-                  <select id='major-select'><option></option>
-                  </select>
+                  <div style="width:300px;text-align:center;">
+                    <h3 style="text-align:center;">Select a Major</h3>
+                    <select style="width:100px;text-align:center;" id='major-select'><option></option>
+                    </select>
+                  </div>
 
                   <div class="row" id="custom_bar">
                   <h2></h2>
