@@ -87,7 +87,7 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 			 }
 			 else{
 			 	var course = courses[courses.length-1]
-			 	var html = '<li class="classTaking"><a href='+course['url'] + '>' + current[j]+ '</a></li>'
+			 	var html = '<li class="classTaking"><a target="_blank" href='+course['url'] + '>' + current[j]+ '</a></li>'
 			 	majorSelector.children('#taken').append(html)
 			 }	
 		}
