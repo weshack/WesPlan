@@ -203,6 +203,7 @@ function majorCourses(majorData, selector){
 function gradProgress(data){
 	var courses = data['acadData']['classes']
 	var credits = data['acadData']['preMatric']
+
 	var creditsCurr = 0
 	var names = []
 	console.log(courses)
@@ -210,9 +211,11 @@ function gradProgress(data){
 		x = courses[i]
 		names.push(x['name'])
 		if (x['current']){creditsCurr += parseFloat(x['credit'])}
-		else {credits += parseFloat(x['credit'])}
+		else{credits += x['credit']}
 	}
-	updateProgress("gradBar", credits-creditsCurr, creditsCurr, 32)
+	console.log(credits + ', ' + creditsCurr)
+	
+	updateProgress("gradBar", credits, creditsCurr, 32)
 
 	console.log(names)
 	$.getJSON('courses/'+names.join('_'), function(courseData){
