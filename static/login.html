@@ -130,14 +130,20 @@
           r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
           ga('create','UA-XXXXX-X');ga('send','pageview');
           
-          $(function() {
-            $('#f1').submit(function() {
-            console.log("here")
-            $("#submitButton").text("Gathering data...")
-            $("#submitButton").attr("disabled","disabled")
-            return true;
-            });
-          });
+          $("#submitButton").click(function(){
+              $("#submitButton").text("Gathering data...")
+              $("#submitButton").attr("disabled","disabled")
+              $('#f1').submit()
+          })
+
+          // $(function() {
+          //   $('#f1').submit(function() {
+          //   console.log("here")
+          //   $("#submitButton").text("Gathering data...")
+          //   $("#submitButton").attr("disabled","disabled")
+          //   return true;
+          //   });
+          // });
 
         </script>
       </body>
