@@ -278,7 +278,8 @@ function updateProgress(progressID, takenCourses, takingCourses, totalCourses){
 	$("#"+progressID).find(".progress-bar-warning").find("span").text(takingCourses+ " credits")
 	$("#"+progressID).find(".progress-bar-emptySpace").css("width", toTakePercent+'%')
 	$("#"+progressID).find(".progress-bar-emptySpace").find("span").text(toTakeCourses + " credits")
-	$("#"+progressID).find("p:contains('0/0')").text((takenCourses+takingCourses)+'/'+totalCourses)
+	$("#"+progressID).children('div').children('p').text((takenCourses+takingCourses)+'/'+totalCourses)
+	//$("#"+progressID).find("p:contains('0/0')").text((takenCourses+takingCourses)+'/'+totalCourses)
 }
 
 function updateGenEds(nsmSum, sbsSum, haSum) {
