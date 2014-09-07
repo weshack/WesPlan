@@ -73,7 +73,7 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 			 	majorSelector.children('#taken').append('<li class="classTaken">' + taken[j]+ '</li>')
 			 }
 			 else{
-			 	var course = courses[0]
+			 	var course = courses[courses.length-1]
 			 	var html = '<li class="classTaken"><a href='+course['url'] + '>' + taken[j]+ '</a></li>'
 			 	majorSelector.children('#taken').append(html)
 			 }
@@ -86,7 +86,7 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 			 	majorSelector.children('#taken').append('<li class="classTaking">' + current[j]+ '</li>')
 			 }
 			 else{
-			 	var course = courses[0]
+			 	var course = courses[courses.length-1]
 			 	var html = '<li class="classTaking"><a href='+course['url'] + '>' + current[j]+ '</a></li>'
 			 	majorSelector.children('#taken').append(html)
 			 }	
@@ -106,12 +106,12 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 				if (course1.length == 0){
 					html1 = n1
 				} else{
-					html1 = '<a href=' + course1[0]['url'] + '>' + n1 + '</a>'
+					html1 = '<a href=' + course1[course1.length-1]['url'] + '>' + n1 + '</a>'
 				}
 				if (course2.length == 0){
 					html2 = n2
 				} else{
-					html2 = '<a href=' + course2[0]['url'] + '>' + n2 + '</a>'
+					html2 = '<a href=' + course2[course2.length-1]['url'] + '>' + n2 + '</a>'
 				}
 				majorSelector.children('#core').append('<li>' + html1 + " or " + html2 + '</li>')
 				// majorSelector.children('#core').append('<li>' + n1+ '</li>')
@@ -123,7 +123,7 @@ function displayCourses(majorData, majorSelector, current, taken, core, coreTota
 				if (course.length==0){
 					html = name
 				}else{
-					html = '<a href=' + course[0]['url'] + '>' + name + '</a>'
+					html = '<a href=' + course[courses.length-1]['url'] + '>' + name + '</a>'
 				}
 
 				majorSelector.children('#core').append('<li>' + html+ '</li>')

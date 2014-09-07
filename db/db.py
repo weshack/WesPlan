@@ -80,7 +80,8 @@ def getCourse(conn, course):
 	#r = list(c.execute("select * from courses where department='{0}' and number='{1}'".format("ARAB", 201)).next())
 	query = "select * from courses where department='%s' and number='%s'"%(department.upper(), number)
 	try:
-		r = list(c.execute(query).next())
+		r = list(c.execute(query))
+		r = r[-1]
 	except:
 		print "Course doesn't exist"
 		return ''
