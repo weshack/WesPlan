@@ -29,7 +29,7 @@ def majors():
 @app.route("/major/<major>")
 def major(major):
 	r =  getMajor(db.database, major)
-	return r[1]
+	return r['name']
 	
 
 @app.route("/courses/<course>")
@@ -95,7 +95,9 @@ def isElective(course, elStrs):
 
 
 def getMajorReqs(classes, major):
-	reqs = major['requiredCourses']
+	reqs = major['requiredCourses'] + major['preDeclareCourses']
+
+
 	names = map(lambda x: x['name'], classes)
 	currents = map(lambda x: x['current'], classes)
 
@@ -123,17 +125,21 @@ def getMajorReqs(classes, major):
 		if not rt:
 			reqsLeft += [r]
 
+
 	return (reqsTaken, reqsCurr, reqsLeft)
 
 
 def parseMajorData(majorName, classes, minor=False):
 	if majorName == '':
 		return ''
+
+	print classes
 	#major = getMajor(db.database, 'Mathematics')
 
 	reqsTaken = []
 	reqsCurr = []
 	reqsLeft = []
+
 	if minor:
 		major = getMinor(db.database, majorName)
 	else:
@@ -185,6 +191,7 @@ def parseMajorData(majorName, classes, minor=False):
 				t3Current += [name]
 			else:
 				t3Taken += [name]
+
 
 	majorDat = {
 		'name': majorName,
