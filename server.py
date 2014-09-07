@@ -194,8 +194,10 @@ def parseMajorData(majorName, classes):
 		't3Taken': t3Taken,
 		't1Total': major['tier1Number'],
 		't2Total': major['tier2Number'],
-		't3Total': major['tier3Number']
-
+		't3Total': major['tier3Number'],
+		't1Strings': elStrs1,
+		't2Strings': elStrs2,
+		't3Strings': elStrs3
 	}
 	return majorDat
 

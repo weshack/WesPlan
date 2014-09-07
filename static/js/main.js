@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var majorInfo = majorProgress(userData);
 	console.log(majorInfo)
 	console.log(gradGenEd)
-	
+	majorCourses(userData)
 });
 
 function majorProgress(data){
@@ -20,6 +20,56 @@ function majorProgress(data){
 		updateProgress("major" + i + "bar", taken, current, total)
 		// majors[i]
 	}
+}
+
+function majorCourses(data){
+	console.log(data['majorData'])
+	for (var i = 0; i < data['majorData'].length; i++){
+
+		majorData = data['majorData'][i]
+		majorSelector = $('#major'+i+'courses')
+
+
+		current = majorData['reqsCurr']
+
+		taken = []
+		taken = taken.concat(majorData['reqsTaken'])
+		taken = taken.concat(majorData['t1Taken'])
+		taken = taken.concat(majorData['t2Taken'])
+		taken = taken.concat(majorData['t3Taken'])
+
+
+		for (var j = 0; j < taken.length;  j++){
+			majorSelector.children('#taken').append('<li>' + taken[j]+ '</li>')	
+		}
+
+		core = majorData['reqsLeft']
+		for (var j = 0; j < core.length;  j++){
+			name = core[j]
+			if (name.indexOf(" or ") > -1){
+				n1 = name.substring(1,name.length-1).split(' or ')[0]
+				n2 = name.substring(1,name.length-1).split(' or ')[1]
+				majorSelector.children('#core').append('<li>' + n1+ '</li>')
+				majorSelector.children('#core').append('<li>' + n2+ '</li>')
+			}
+			else{majorSelector.children('#core').append('<li>' + name+ '</li>')}	
+		}
+
+		electives = []
+		electives = electives.concat(majorData['t1Strings'])
+		electives = electives.concat(majorData['t2Strings'])
+		electives = electives.concat(majorData['t3Strings'])
+
+		console.log(electives)
+
+		for (var j = 0; j < electives.length;  j++){
+			majorSelector.children('#elect').append('<li>' + electives[j]+ '</li>')
+		}
+	}
+
+
+	
+
 }
 function gradProgress(data){
 	var courses = data['acadData']['classes']
