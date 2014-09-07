@@ -32,7 +32,47 @@ h2{
 	/*border-radius: 25px;*/
 	/* margin: 0; */
 }
+<<<<<<< Updated upstream
 .progress-striped .progress-bar {
+=======
+
+ul li{
+	list-style-type: none;
+	text-align: center;
+	padding-top: 8px;
+}	
+
+
+
+/*#nsm0 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#nsm1 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#nsm2 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#ha0 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+}
+
+#ha1 {
+	padding: 10px;
+	margin: 5px;
+	width: 100px;
+>>>>>>> Stashed changes
 }
 .progress-bar-emptySpace {
 	
@@ -53,10 +93,3 @@ h2{
 	font-size:16px;
 	
 }
-
-
-
-
-
-
-

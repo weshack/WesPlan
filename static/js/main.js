@@ -38,6 +38,9 @@ function majorCourses(data){
 		taken = taken.concat(majorData['t2Taken'])
 		taken = taken.concat(majorData['t3Taken'])
 
+		for (var j = 0; j < current.length;  j++){
+			majorSelector.children('#taken').append('<li style="color: blue">' + current[j]+ '</li>')	
+		}
 
 		for (var j = 0; j < taken.length;  j++){
 			majorSelector.children('#taken').append('<li>' + taken[j]+ '</li>')	
